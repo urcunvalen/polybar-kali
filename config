@@ -1,0 +1,362 @@
+;-------------------------------------------------------------------;
+;-- Polybar config by Valentin Urcun - valentin.urcun@outlook.com --;
+;-------------------------------------------------------------------;
+
+
+;-- global colors --;
+
+[colors]
+background = #2E3141
+background-alt = #444
+foreground = #dfdfdf
+foreground-alt = #ffffff
+primary = #FBCCCC
+graphite = #2e3440
+red = #F03051
+black = #000000
+green = #B3F9AF
+pink = #F9AFCA
+orange = #F99265
+blue = #AFC5F9
+purple = #D7AFF9
+dontknow = #AFF9C7
+yellow = #F9F1AF
+grey = #CCCCCC	
+
+
+;----------------------;
+;-- Polybar settings --;
+;----------------------;
+
+[bar/example]
+monitor = Virtual1 
+
+;-- format --;
+ 
+width = 80%
+height = 28
+radius = 0.0
+fixed-center = true
+
+;-- colored background --;
+#background = ${colors.graphite}
+
+;-- transparent background --;
+background = #00000000
+
+line-size = 3
+line-color = #f00
+
+border-size-left = 8
+border-color = #00000000
+
+padding-left = 0
+padding-right = 0
+
+module-margin-left = 1
+module-margin-right = 2
+
+tray-position = 
+tray-padding = 
+
+
+offset-x = 19.5%
+
+;-- fonts --;
+
+font-0 = fixed:pixelsize=11;3
+font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
+font-2 = FontAwesome5Free:size=10;3
+font-3 = FontAwesome5Free:style=Solid:size=10;3
+font-4 = FontAwesome5Free:style=Regular:size=10;3
+font-5 = FontAwesome5Brands:style=Regular:size=10;3
+font-6 = PowerlineSymbols:style=Medium:size=10;3
+font-7 = MaterialIcons-Regular.ttf: Material Icons:style=Regular;size=10;3
+font-8 = fontawesome-webfont.ttf: FontAwesome:style=Regular;size=10;3
+
+;-- modules enabled --;
+
+modules-left = 
+modules-center = 
+modules-right = various wired-network speeddown speedup weather pkg cpu ram filesystem gmail battery2 date	
+
+
+;-------------;
+;-- Modules --;
+;-------------;
+
+;-------------;
+;-- VARIOUS --;
+;-------------;
+
+;-- Displays an icon when : Jack headset connected, Microphone unmuted and Capslocks enabled
+
+[module/various]
+type = custom/script
+interval = 0
+
+format = <label>
+label = "%output%"
+label-underline = ${colors.grey}
+
+exec = ~/.config/polybar/modules/various
+
+
+;--------------;
+;-- ETHERNET --;
+;--------------;
+
+;--  Ethernet IP --;
+
+[module/wired-network]
+type = internal/network
+
+interface = eth0
+
+format-connected = <ramp-signal> <label-connected>
+label-connected = %local_ip%
+
+format-connected-foreground = ${colors.purple}
+format-disconnected = <label-disconnected>
+format-connected-underline = ${colors.purple}
+
+ramp-signal-0 = 
+ramp-signal-0-foreground = ${colors.purple}
+
+
+;---------------;
+;-- SPEEDDOWN --;
+;---------------;
+
+;-- Current download speed --;
+
+[module/speeddown]
+type = internal/network
+
+interface = eth0
+
+label-connected = "%downspeed:7%"
+format-connected-prefix = ""
+format-connected-prefix-foreground = #3EC13F
+format-connected-underline = #3EC13F
+
+
+;-------------;
+;-- SPEEDUP --;
+;-------------;
+
+;-- Current upload speed --;
+
+[module/speedup]
+type = internal/network
+
+interface = eth0
+
+label-connected = "%upspeed:7%"
+format-connected-prefix = ""
+format-connected-prefix-foreground = #FE522C
+format-connected-underline = #FE522C 
+
+
+;-------------;
+;-- WEATHER --;
+;-------------;
+
+;-- Local weather --;
+;-- Put your openweather API KEY and City ID in ~/.config/polybar/modules/weather.py
+
+[module/weather]
+type = custom/script
+interval = 10
+
+format-prefix = " "
+format-prefix-foreground = #15BFE1
+format = <label>
+format-underline = #15BFE1
+
+exec = ~/.config/polybar/modules/weather.py
+exec-if = "ping -q -w 2 -c 1 google.fr > /dev/null"
+
+
+;---------;
+;-- CPU --;
+;---------;
+
+;-- CPU usage--;
+
+[module/cpu]
+type = internal/cpu
+interval = 2
+
+format-prefix = " "
+format-prefix-foreground = ${colors.green}
+label = %percentage%%
+format-underline = ${colors.green}
+
+
+;---------;
+;-- RAM --;
+;---------;
+
+;-- RAM usage --;
+
+[module/ram]
+type = internal/memory
+interval = 0.2
+
+format = <label> <bar-used>
+format-underline = #fbcccc
+ 
+label = RAM
+label-font = 3
+label-foreground = #fbcccc
+ 
+bar-used-width = 10
+bar-used-gradient = true
+bar-used-foreground-0 = #fbcccc
+bar-used-foreground-1 = #fa9999
+bar-used-foreground-2 = #ef2222
+bar-used-foreground-3 = #ab0000
+bar-used-indicator = █
+bar-used-indicator-font = 3
+bar-used-indicator-foreground = #6a282c
+bar-used-fill = █
+bar-used-fill-font = 3
+bar-used-empty = █
+bar-used-empty-font = 3
+bar-used-empty-foreground = #44
+
+
+;----------------;
+;-- FILESYSTEM --;
+;----------------;
+
+;-- Free /: space
+
+[module/filesystem]
+type = internal/fs
+interval = 1200
+
+mount-0 = /
+
+format-mounted = <label-mounted>
+label-mounted = %mountpoint% : %percentage_free%%
+label-mounted-foreground = ${colors.yellow}
+label-mounted-underline = ${colors.yellow}
+fixed-values = false
+spacing = 2
+
+
+;-----------;
+;-- GMAIL --;
+;-----------;
+
+;-- Shows unread mails --;
+;-- Left click to open firefox on gmail page --;
+;-- See ~/.config/polybar/modules/gmail/README and ~/.config/polybar/modules/gmail/LICENSE
+
+[module/gmail]
+type = custom/script
+
+format = <label>
+format-underline = #e06c75
+tail = true
+
+exec = python3.9 ~/.config/polybar/modules/gmail/launch.py -ns
+click-left = xdg-open https://mail.google.com
+
+
+;---------;
+;-- PKG --;
+;---------;
+
+;-- Available updates
+
+[module/pkg]
+type = custom/script
+interval = 1200
+
+format = <label>
+format-prefix = " "
+format-prefix-foreground = ${colors.purple}
+
+label = "%output%"
+format-underline = ${colors.purple}
+
+exec = ~/.config/polybar/modules/pkg.sh
+exec-if = "ping -q -w 2 -c 1 google.fr > /dev/null"
+
+
+;-------------;
+;-- BATTERY --;
+;-------------;
+
+;-- Battery state --;
+
+[module/battery]
+type = internal/battery
+
+battery = BAT0
+adapter = AC
+
+;-- Most batteries never hit 100%
+full-at = 98
+
+format-charging = <animation-charging> <label-charging>
+format-discharging = <ramp-capacity> <label-discharging>
+format-full = <ramp-capacity> <label-full>
+
+label-charging = %percentage%%
+label-discharging = %percentage%%
+
+ramp-capacity-0 =  
+ramp-capacity-0-foreground = ${colors.red}
+ramp-capacity-1 =  
+ramp-capacity-2 =  
+ramp-capacity-3 =  
+ramp-capacity-4 =  
+ramp-capacity-foreground = ${colors.green}
+
+animation-charging-0 =  
+animation-charging-1 =  
+animation-charging-2 =  
+animation-charging-3 =  
+animation-charging-4 =  
+animation-charging-foreground = ${colors.green}
+animation-charging-framerate = 750
+
+
+;--------------;
+;-- BATTERY2 --;
+;--------------;
+
+;-- Battery module formatting --;
+
+[module/battery2]
+inherit = module/battery
+
+format-full-underline = ${colors.green}
+format-charging-underline = ${colors.green}
+format-discharging-underline = ${colors.orange}
+
+
+;----------;
+;-- DATE --;
+;----------;
+
+;-- Current local date and time --;
+;-- Left click to show seconds --;
+
+[module/date]
+type = internal/date
+
+interval = 1
+format = <label>
+date = "%d/%m/%y"
+date-alt = %d %b %y
+time = %H:%M:%S
+time-alt = "%H:%M"
+label = %{F#15BFE1} %{F-}%date% %{F#15BFE1}   %{F-}%time%
+label-underline = #15BFE1
+
+
