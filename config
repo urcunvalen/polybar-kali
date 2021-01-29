@@ -163,7 +163,7 @@ format-connected-underline = #FE522C
 ;-------------;
 
 ;-- Local weather --;
-;-- Put your openweather API KEY and City ID in ~/.config/polybar/modules/weather.py
+;-- Put your openweather API KEY and City ID in ~/.config/polybar/modules/Weather/weather.py
 
 [module/weather]
 type = custom/script
@@ -174,13 +174,13 @@ format-prefix-foreground = #15BFE1
 format = <label>
 format-underline = #15BFE1
 
-exec = ~/.config/polybar/modules/weather.py
+exec = cat ~/.config/polybar/modules/Weather/evelynedheliat
 exec-if = "ping -q -w 2 -c 1 google.fr > /dev/null"
 
 
 ;---------;
 ;-- CPU --;
-;---------;
+;---------e
 
 ;-- CPU usage--;
 

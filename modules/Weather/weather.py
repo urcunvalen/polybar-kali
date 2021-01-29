@@ -3,7 +3,11 @@
 
 import requests
 
-CITY = "1070940" # City ID
+f=open("currentCityID","r")
+CITY=f.read().replace('\n','')
+f.close()
+
+#CITY = "1070940" # City ID
 API_KEY = "d179235a378d7005b408ae177c4e3aa0"
 UNITS = "Metric"
 UNIT_KEY = "C"
@@ -18,5 +22,4 @@ try:
     else:
         print("Error: BAD HTTP STATUS CODE " + str(REQ.status_code))
 except (ValueError, IOError):
-    print("Error: Unable print the data")
-    
+    print("Error: Unable to print the data")
