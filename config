@@ -76,10 +76,10 @@ font-8 = fontawesome-webfont.ttf: FontAwesome:style=Regular;size=10;3
 
 ;-- modules enabled --;
 
-modules-left = 
+modules-left =
 modules-center = 
-modules-right = various wired-network speeddown speedup weather pkg cpu ram filesystem gmail battery2 date	
-
+modules-right = various currency wired-network speeddown speedup pkg cpu ram filesystem battery2 date	
+;weather
 
 ;-------------;
 ;-- Modules --;
@@ -163,11 +163,10 @@ format-connected-underline = #FE522C
 ;-------------;
 
 ;-- Local weather --;
-;-- Put your openweather API KEY and City ID in ~/.config/polybar/modules/Weather/weather.py
 
 [module/weather]
 type = custom/script
-interval = 10
+interval = 180
 
 format-prefix = " "
 format-prefix-foreground = #15BFE1
@@ -176,6 +175,27 @@ format-underline = #15BFE1
 
 exec = cat ~/.config/polybar/modules/Weather/evelynedheliat
 exec-if = "ping -q -w 2 -c 1 google.fr > /dev/null"
+
+
+;--------------;
+;-- CURRENCY --;
+;--------------;
+
+;-- currencies convert rate --;
+;-- set to euros - ariary, see ./Modules/currency.sh --;
+
+[module/currency]
+type = custom/script
+interval = 86400
+
+format-prefix = "€ "
+format-underline = ${colors.red}
+
+
+exec = ~/.config/polybar/modules/currency.sh
+exec-if = "ping -q -w 2 -w 1 google.fr > /dev/null"
+
+click-left = firefox https://www.boursorama.com/bourse/devises/taux-de-change-euro-ariary-EUR-MGA/
 
 
 ;---------;
@@ -358,5 +378,4 @@ time = %H:%M:%S
 time-alt = "%H:%M"
 label = %{F#15BFE1} %{F-}%date% %{F#15BFE1}   %{F-}%time%
 label-underline = #15BFE1
-
 
